@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Base } from '../components/Base'
 import { Button, Card, CardBody, Col, Container, Form, Row } from 'react-bootstrap';
 import logo from '../assets/logo.png'
+import { toast } from 'react-toastify';
+import { registerUser } from '../services/user.service';
 
 export const Register = () => {
   let[data, setData] = useState({
@@ -35,7 +37,57 @@ export const Register = () => {
   const[errorData, setErrorData] = useState({
     isError:false,
     errorData:null
-  })
+  });
+
+
+  const submitForm = (event)=>{
+      event.preventDefault();
+      console.log(data);
+
+      // Validate clint side
+      if(data.name == undefined || data.name.trim()==''){
+        toast.error("Name is required!")
+        return;
+      }
+
+      if(data.email == undefined || data.email.trim()==''){
+        toast.error("Email is required!")
+        return;
+      }
+
+      if(data.password == undefined || data.password.trim()==''){
+        toast.error("Password is required!")
+        return;
+      }
+
+      if(data.confirmPassword == undefined || data.confirmPassword.trim()==''){
+        toast.error("Confirm Password is required!")
+        return;
+      }
+
+      if(data.gender == undefined || data.gender.trim()==''){
+        toast.error("Select Gender !")
+        return;
+      }
+
+      if(data.password != data.confirmPassword){
+        toast.error("Password and Confirm Password not matched")
+        return;
+      }
+
+      // All Right:
+      registerUser(data)
+      .then(userData=>{
+        console.log(userData);
+        toast.success("User Register Successfully !! "+userData.name);
+        clearData();
+      })
+      .catch(error=>{
+        console.log(error);
+        toast.error("Erroe in Creating User ! Try again")
+      })
+      
+  }
 
   function registerForm() {
     return (
@@ -54,7 +106,7 @@ export const Register = () => {
                   <img src={logo} height={70} width={70}></img>
                 </Container>
                 <h3 className='mb-3 text-center text-uppercase'>Store Signup here</h3>
-                <Form>
+                <Form onSubmit={submitForm}>
                   <Form.Group className="mb-3" controlId="formName">
                     <Form.Label>Enter Your Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter Name" 
@@ -93,7 +145,7 @@ export const Register = () => {
                       label='Male'
                       id={'gender'}
                       value={'male'}
-                      checked={data.gender=='male'}
+                      checked={data.gender==='male'}
                       onChange={(event)=> handleChange(event,'gender')}
                      
                     />
@@ -104,7 +156,7 @@ export const Register = () => {
                       label='Female'
                       id={'gender'}
                       value={'female'}
-                      checked={data.gender=='female'}
+                      checked={data.gender==='female'}
                       onChange={(event)=> handleChange(event,'gender')}
                       
                     />
@@ -117,14 +169,15 @@ export const Register = () => {
                     value={data.about}
                     />
                   </Form.Group>
-                </Form>
+                
                 <Container>
                   <p className='text-center'>Already Register!<a href=''> Login</a></p>
                 </Container>
                 <Container className='text-center'>
-                  <Button className='text-uppercase' variant='success'>Register</Button>
+                  <Button type='submit' className='text-uppercase' variant='success'>Register</Button>
                   <Button className='ms-2 text-uppercase' variant='danger' onClick={clearData}>Reset</Button>
                 </Container>
+                </Form>
               </CardBody>
             </Card>
           </Col>
