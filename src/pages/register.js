@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { Base } from '../components/Base'
-import { Button, Card, CardBody, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Card, CardBody, Col, Container, Form, Row, Spinner } from 'react-bootstrap';
 import logo from '../assets/logo.png'
 import { toast } from 'react-toastify';
 import { registerUser } from '../services/user.service';
+import { NavLink } from 'react-router-dom';
 
 export const Register = () => {
   let[data, setData] = useState({
@@ -15,18 +16,21 @@ export const Register = () => {
     about:''
   });
 
+  // Set error
+  const[errorData, setErrorData] = useState({
+    isError:false,
+    errorData:null
+  });
+
+  //set Loading
+  const[loading, setLoading] = useState(false);
+
   const handleChange=(event, property)=>{
     setData({
       ...data,
     [property] : event.target.value
     })
   }
-
-  // Set error
-  const[errorData, setErrorData] = useState({
-    isError:false,
-    errorData:null
-  });
 
   // Clear Data
   const clearData=()=>{
@@ -84,6 +88,7 @@ export const Register = () => {
       }
 
       // All Right:
+      setLoading(true);
       registerUser(data)
       .then(userData=>{
         console.log(userData);
@@ -97,6 +102,8 @@ export const Register = () => {
         })
         console.log(error);
         toast.error("Erroe in Creating User ! Try again")
+      }).finally(()=>{
+        setLoading(false);
       })
       
   }
@@ -193,10 +200,24 @@ export const Register = () => {
                   </Form.Group>
                 
                 <Container>
-                  <p className='text-center'>Already Register!<a href=''> Login</a></p>
+                  <p className='text-center'>Already Register! <NavLink to={'/login'}>Login Here</NavLink></p>
                 </Container>
                 <Container className='text-center'>
-                  <Button type='submit' className='text-uppercase' variant='success'>Register</Button>
+                  <Button 
+                  type='submit' 
+                  className='text-uppercase' 
+                  variant='success'
+                  disabled={loading}
+                  >
+                    <Spinner 
+                    animation='border'
+                    size='sm'
+                    className='me-2'
+                    hidden={!loading}
+                    />
+                    <span hidden={!loading}>Wait...</span>
+                   <span hidden={loading}> Register</span>
+                    </Button>
                   <Button className='ms-2 text-uppercase' variant='danger' onClick={clearData}>Reset</Button>
                 </Container>
                 </Form>
