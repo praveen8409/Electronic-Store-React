@@ -22,6 +22,12 @@ export const Register = () => {
     })
   }
 
+  // Set error
+  const[errorData, setErrorData] = useState({
+    isError:false,
+    errorData:null
+  });
+
   // Clear Data
   const clearData=()=>{
     setData({
@@ -32,12 +38,14 @@ export const Register = () => {
       gender:'',
       about:''
     })
+
+    setErrorData({
+      isError:false,
+      errorData:null
+    })
   }
 
-  const[errorData, setErrorData] = useState({
-    isError:false,
-    errorData:null
-  });
+ 
 
 
   const submitForm = (event)=>{
@@ -83,6 +91,10 @@ export const Register = () => {
         clearData();
       })
       .catch(error=>{
+        setErrorData({
+          isError:true,
+          errorData:error
+        })
         console.log(error);
         toast.error("Erroe in Creating User ! Try again")
       })
@@ -106,34 +118,42 @@ export const Register = () => {
                   <img src={logo} height={70} width={70}></img>
                 </Container>
                 <h3 className='mb-3 text-center text-uppercase'>Store Signup here</h3>
-                <Form onSubmit={submitForm}>
+                <Form noValidate onSubmit={submitForm}>
                   <Form.Group className="mb-3" controlId="formName">
                     <Form.Label>Enter Your Name</Form.Label>
                     <Form.Control type="text" placeholder="Enter Name" 
                     onChange={(event)=> handleChange(event,'name')}
                     value={data.name}
+                    isInvalid={errorData.errorData?.response?.data?.name}
                     />
+                    <Form.Control.Feedback type='invalid'>{errorData.errorData?.response?.data?.name}</Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Enter your Email</Form.Label>
                     <Form.Control type="email" placeholder="Enter email"
                      onChange={(event)=> handleChange(event,'email')}
                      value={data.email}
+                     isInvalid={errorData.errorData?.response?.data?.email}
                     />
+                    <Form.Control.Feedback type='invalid'>{errorData.errorData?.response?.data?.email}</Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formPassword">
                     <Form.Label>Enter new Password </Form.Label>
                     <Form.Control type="password" placeholder="Enter Password"
                     onChange={(event)=> handleChange(event,'password')}
                     value={data.password}
+                    isInvalid={errorData.errorData?.response?.data?.password}
                     />
+                    <Form.Control.Feedback type='invalid'>{errorData.errorData?.response?.data?.password}</Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="formConfirmPassword">
                     <Form.Label>Re Enter Password </Form.Label>
                     <Form.Control type="password" placeholder="Re Enter Password"
                     onChange={(event)=> handleChange(event,'confirmPassword')}
                     value={data.confirmPassword}
+                    isInvalid={errorData.errorData?.response?.data?.confirmPassword}
                     />
+                    <Form.Control.Feedback type='invalid'>{errorData.errorData?.response?.data?.confirmPassword}</Form.Control.Feedback>
                   </Form.Group>
                   <Form.Group className='mb-3'>
                   <Form.Label>Select Gender </Form.Label>
@@ -167,7 +187,9 @@ export const Register = () => {
                     <Form.Control as={`textarea`} rows={6} placeholder='Write here'
                     onChange={(event)=> handleChange(event,'about')}
                     value={data.about}
+                    isInvalid={errorData.errorData?.response?.data?.about}
                     />
+                    <Form.Control.Feedback type='invalid'>{errorData.errorData?.response?.data?.about}</Form.Control.Feedback>
                   </Form.Group>
                 
                 <Container>
