@@ -57,32 +57,32 @@ export const Register = () => {
       console.log(data);
 
       // Validate clint side
-      if(data.name == undefined || data.name.trim()==''){
+      if(data.name === undefined || data.name.trim()===''){
         toast.error("Name is required!")
         return;
       }
 
-      if(data.email == undefined || data.email.trim()==''){
+      if(data.email === undefined || data.email.trim()===''){
         toast.error("Email is required!")
         return;
       }
 
-      if(data.password == undefined || data.password.trim()==''){
+      if(data.password === undefined || data.password.trim()===''){
         toast.error("Password is required!")
         return;
       }
 
-      if(data.confirmPassword == undefined || data.confirmPassword.trim()==''){
+      if(data.confirmPassword === undefined || data.confirmPassword.trim()===''){
         toast.error("Confirm Password is required!")
         return;
       }
 
-      if(data.gender == undefined || data.gender.trim()==''){
+      if(data.gender === undefined || data.gender.trim()===''){
         toast.error("Select Gender !")
         return;
       }
 
-      if(data.password != data.confirmPassword){
+      if(data.password !== data.confirmPassword){
         toast.error("Password and Confirm Password not matched")
         return;
       }
@@ -90,12 +90,12 @@ export const Register = () => {
       // All Right:
       setLoading(true);
       registerUser(data)
-      .then(userData=>{
+      .then((userData)=>{
         console.log(userData);
         toast.success("User Register Successfully !! "+userData.name);
         clearData();
       })
-      .catch(error=>{
+      .catch((error)=>{
         setErrorData({
           isError:true,
           errorData:error
@@ -122,7 +122,7 @@ export const Register = () => {
             } >
               <CardBody>
                 <Container className='text-center'>
-                  <img src={logo} height={70} width={70}></img>
+                  <img src={logo} height={70} width={70} alt='logo'></img>
                 </Container>
                 <h3 className='mb-3 text-center text-uppercase'>Store Signup here</h3>
                 <Form noValidate onSubmit={submitForm}>
