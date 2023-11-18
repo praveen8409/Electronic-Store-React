@@ -6,21 +6,21 @@ import { NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useContext } from 'react';
 import { UserContext } from '../context/user.context';
+import { getUserFromLocalStorage } from '../auth/helper.auth';
 
 
 const CustomNavbar = () => {
   const userContext = useContext(UserContext);
 
   const doLogout = ()=>{
-    userContext.setIsLogin(false);
-    userContext.setUserData(null);
+    userContext.logout();
   }
  
   return (
     <Navbar collapseOnSelect className='bg-navbar-color' expand="lg" variant='dark'>
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          <img src={logo} width={50} height={50}></img>
+          <img src={logo} width={50} height={50} alt='logo'></img>
           Electronic Store
         </Navbar.Brand>
 
@@ -51,7 +51,7 @@ const CustomNavbar = () => {
                 (
                   <>
 
-                    <Nav.Link as={NavLink} to="#">{userContext.userData.user.email}</Nav.Link>
+                    <Nav.Link as={NavLink} to="#">{userContext.userData?.user?.email}</Nav.Link>
                     <Nav.Link onClick={doLogout}>Logout</Nav.Link>
                   </>
                 ) :

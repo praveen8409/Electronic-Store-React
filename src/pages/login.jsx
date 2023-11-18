@@ -55,15 +55,17 @@ export const Login = () => {
     setLoading(true);
     loginUser(data)
       .then((userData) => {
-        console.log(userData);
+        // console.log(userData);
         toast.success("User Login Successfully !!");
         setError({
           errorData: null,
           isError: false
         });
 
-        userContext.setIsLogin(true);
-        userContext.setUserData(userData);
+        // userContext.setIsLogin(true);
+        // userContext.setUserData(userData);
+
+        userContext.login(userData);
         redirect('/users/home');
 
       }).catch((error) => {

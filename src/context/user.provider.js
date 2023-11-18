@@ -1,10 +1,32 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { UserContext } from "./user.context";
+import { doLoginLocalStorage, doLogoutFromLocalStorage, getDataFromLocalStorage, getUserFromLocalStorage, isLoggedIn } from "../auth/helper.auth";
 
 
 export const UserProvider = ({ children }) => {
     const [isLogin, setIsLogin] = useState(false);
     const [userData, setUserData] = useState(null);
+
+
+    useEffect(()=>{
+        setIsLogin(isLoggedIn());
+        setUserData(getDataFromLocalStorage());
+    },[]);
+
+    // login
+    const doLogin = (data) =>{
+        doLoginLocalStorage(data);
+        setIsLogin(true);
+        setUserData(getDataFromLocalStorage());
+
+    }
+
+    // logout
+    const doLogout = () =>{
+        doLogoutFromLocalStorage();
+        setIsLogin(false);
+        setUserData(null);
+    }
 
 
     return (
@@ -13,7 +35,9 @@ export const UserProvider = ({ children }) => {
                 userData: userData,
                 setUserData: setUserData,
                 isLogin: isLogin,
-                setIsLogin: setIsLogin
+                setIsLogin: setIsLogin,
+                login:doLogin,
+                logout:doLogout
             }
         }>
             {children}
