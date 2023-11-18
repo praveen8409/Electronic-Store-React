@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Base } from '../components/Base'
 import { Button, Card, CardBody, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { loginUser } from '../services/user.service'
+import { UserContext } from '../context/user.context'
 
 export const Login = () => {
+  const redirect = useNavigate();
+  const userContext = useContext(UserContext);
 
   let [data, setData] = useState({
     email: '',
@@ -58,6 +61,11 @@ export const Login = () => {
           errorData: null,
           isError: false
         });
+
+        userContext.setIsLogin(true);
+        userContext.setUserData(userData);
+        redirect('/users/home');
+
       }).catch((error) => {
         console.log(error);
         toast.error(error.response.data.message)
@@ -83,7 +91,7 @@ export const Login = () => {
               }
             } >
               <CardBody>
-
+              {/* <Container>{JSON.stringify(userContext)}</Container> */}
                 <h3 className='mb-3 text-center text-uppercase'>Store Login here</h3>
                 <Form noValidate onSubmit={submitForm}>
                   <Form.Group className="mb-3" controlId="formEmail">

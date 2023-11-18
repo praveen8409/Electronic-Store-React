@@ -3,9 +3,9 @@ import { Outlet } from 'react-router-dom'
 
 export const Dashboard = () => {
   return (
-    <dic>
+    <div>
     <div>User dashboard</div>
     <Outlet></Outlet>
-    </dic>
+    </div>
   )
 }

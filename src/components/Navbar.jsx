@@ -4,9 +4,18 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import { useContext } from 'react';
+import { UserContext } from '../context/user.context';
 
 
 const CustomNavbar = () => {
+  const userContext = useContext(UserContext);
+
+  const doLogout = ()=>{
+    userContext.setIsLogin(false);
+    userContext.setUserData(null);
+  }
+ 
   return (
     <Navbar collapseOnSelect className='bg-navbar-color' expand="lg" variant='dark'>
       <Container>
@@ -36,8 +45,24 @@ const CustomNavbar = () => {
           </Nav>
           <Nav>
             <Nav.Link as={NavLink} to="cart">Cart(20)</Nav.Link>
-            <Nav.Link as={NavLink} to="login">Login</Nav.Link>
-            <Nav.Link as={NavLink} to="register">Register</Nav.Link>
+
+            {
+              (userContext.isLogin) ?
+                (
+                  <>
+
+                    <Nav.Link as={NavLink} to="#">{userContext.userData.user.email}</Nav.Link>
+                    <Nav.Link onClick={doLogout}>Logout</Nav.Link>
+                  </>
+                ) :
+                (
+                  <>
+                    <Nav.Link as={NavLink} to="login">Login</Nav.Link>
+                    <Nav.Link as={NavLink} to="register">Register</Nav.Link>
+                  </>
+                )
+            }
+
 
           </Nav>
         </Navbar.Collapse>

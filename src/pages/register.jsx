@@ -4,9 +4,12 @@ import { Button, Card, CardBody, Col, Container, Form, Row, Spinner } from 'reac
 import logo from '../assets/logo.png'
 import { toast } from 'react-toastify';
 import { registerUser } from '../services/user.service';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export const Register = () => {
+
+  let redirect = useNavigate();
+
   let[data, setData] = useState({
     name:'',
     email:'',
@@ -94,6 +97,7 @@ export const Register = () => {
         console.log(userData);
         toast.success("User Register Successfully !! "+userData.name);
         clearData();
+        redirect('/login')
       })
       .catch((error)=>{
         setErrorData({
