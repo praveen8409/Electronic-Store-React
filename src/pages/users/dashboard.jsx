@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Navigate, Outlet } from 'react-router-dom'
 import { UserContext } from '../../context/user.context'
 import { Button, Card, CardBody, Col, Container, Row } from 'react-bootstrap';
+import { isLoggedIn } from '../../auth/helper.auth';
 
 export const Dashboard = () => {
 
@@ -43,6 +44,8 @@ export const Dashboard = () => {
   }
 
   return (
-    (userContext.isLogin) ? (dashboardViews()) : (notLoggedInView())
+    // (userContext.isLogin) ? (dashboardViews()) : (notLoggedInView())
+    (isLoggedIn()) ? (dashboardViews()) : (<Navigate to={'/login'}/>)
+
   )
 }
