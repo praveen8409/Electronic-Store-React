@@ -14,6 +14,7 @@ import { Login } from './pages/login';
 import { Register } from './pages/register';
 import { UserProvider } from './context/user.provider';
 import { Home } from './pages/users/home';
+import { Order } from './pages/users/order';
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
           <Route path='/users' element={<Dashboard />} >
             <Route path='profile' element={<Profile />}/>
             <Route path='home' element={<Home />}/>
+            <Route path='orders' element={<Order />}/>
 
           </Route>
         </Routes>
